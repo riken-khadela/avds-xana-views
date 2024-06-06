@@ -1,1 +1,1 @@
-# avds-xana-views
+# AVD_setup
