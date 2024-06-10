@@ -80,11 +80,20 @@ WSGI_APPLICATION = 'surviral_avd.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        },
+        'aws': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'Xana-view',
+            'USER': 'surviraluser',
+            'PASSWORD': 'Surviral#806',
+            'HOST': 'surviral-project.c4jxfxmbuuss.ap-southeast-1.rds.amazonaws.com',
+            'PORT': '5432',
+        },
+        
     }
-}
 
 
 # Password validation

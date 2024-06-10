@@ -383,7 +383,7 @@ class InstaBot:
 
     @staticmethod
     def create_avd(avd_name, package=None, device=None):
-        default_package = "system-images;android-28;default;x86"
+        default_package = "system-images;android-30;google_apis;x86_64"
 
         try:
             if not package:
@@ -1066,8 +1066,20 @@ class InstaBot:
         ...
     
     def send_xana_views(self):
-        breakpoint()
-        self.driver().start_activity('com.android.chrome','com.google.android.apps.chrome.Main')
+        self.open_chrome()
+        
+        search_input = self.input_text('https://xana.net/','Search input','//android.widget.EditText[@resource-id="com.android.chrome:id/search_box_text"]')
+        self.click_element('click first result','//android.widget.ListView/android.view.ViewGroup[1]')
+        random_sleep(10,15)
+        
+        self.some_random_activities()
+        
+    def open_chrome(self):
+        for _ in range(3):
+            try :
+                self.driver().start_activity('com.android.chrome','com.google.android.apps.chrome.Main')
+                break
+            except : ...
         
         title = self.find_element('Title','//android.widget.TextView[@resource-id="com.android.chrome:id/title"]')
         if title :
@@ -1086,12 +1098,88 @@ class InstaBot:
         if sign_title :
             if sign_title.text == 'Sign in to Chrome' :
                 self.click_element('No thanks to sign in','com.android.chrome:id/negative_button',By.ID)
-        
+        else :
+            self.click_element('No thanks','com.android.chrome:id/negative_button',By.ID)
 
-        search_input = self.input_text('https://xana.net/','Search input','//android.widget.EditText[@resource-id="com.android.chrome:id/search_box_text"]')
-        self.click_element('click first result','//android.widget.ListView/android.view.ViewGroup[1]')
-        random_sleep(10,15)
+    def random_swipes(self):
         
+        for _ in range(random.randint(4,9)):
+            swipe_num = random.choice([1,2])
+            if swipe_num == 1 :
+                self.swipe_up()
+            else : swipe_down()
+            random_sleep(3,10)
+    
+    def search_link(self,url : str):
+        
+        sun = self.click_element('Url input','com.android.chrome:id/url_bar',By.ID)
+        sun = self.input_text(url,'Url input','com.android.chrome:id/url_bar',By.ID)
+        # sun.submit()
+        all_res = self.driver().find_elements(By.XPATH,'//android.widget.FrameLayout[@resource-id="com.android.chrome:id/omnibox_results_container"]//*')    
+        for res in all_res :
+            try :
+                if res.text == url:
+                    res.click()
+            except : ... 
+        
+        breakpoint()
+    
+    
+    def swipe_down(self):
+        try:
+            size = self.driver().get_window_size()
+            x, y = size['width'], size['height']
+            y1, y2 = y * 0.7, y * 0.875  # move 1/4 down from the top and 1/4 up from the bottom
+            x1 = x * 0.5
+            t = 200
+            self.driver().swipe(x1, y1, x1, y2, t)
+            # time.sleep(2)
+        except Exception as e:print(e)
+        
+    def get_visible_elements(self,driver):
+        # Get a list of visible elements on the screen
+        elements = driver.find_elements(MobileBy.XPATH, "//*")
+        visible_texts = set()
+        for element in elements:
+            if element.is_displayed():
+                visible_texts.add(element.text)
+        return visible_texts
+    
+    def scroll_to_top(self,driver):
+        same_elements_count = 0
+        previous_elements = None
+
+        while same_elements_count < 3:
+            current_elements = self.get_visible_elements(driver)
+            
+            if current_elements == previous_elements:
+                same_elements_count += 1
+            else:
+                same_elements_count = 0
+            
+            previous_elements = current_elements
+            
+            if same_elements_count < 3:
+                self.swipe_down()
+                time.sleep(1)  # Wait for the scroll to complete and UI to stabilize
+
+    
+    def some_random_activities(self):
+        self.search_link('https://xana.net/')
+        self.random_swipes()
+        self.scroll_to_top()
+        for _ in range(9): 
+            if self.click_element('Learn more','//android.view.View[@content-desc="Learn more"]',timeout=2):
+                random_sleep(10,13)
+                break
+            else:
+                self.swipe_up()
+            
+        self.random_swipes()
+        
+        
+            
+            
         
     def Install_new_insta(self,):
         cmd = f"adb -s emulator-{self.adb_console_port} install -t -r -d -g {os.path.join(BASE_DIR, 'apk/instagram.apk')}"
