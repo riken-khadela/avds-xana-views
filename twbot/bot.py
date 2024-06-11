@@ -1107,7 +1107,7 @@ class InstaBot:
             swipe_num = random.choice([1,2])
             if swipe_num == 1 :
                 self.swipe_up()
-            else : swipe_down()
+            else : self.swipe_down()
             random_sleep(3,10)
     
     def search_link(self,url : str):
@@ -1136,7 +1136,9 @@ class InstaBot:
             # time.sleep(2)
         except Exception as e:print(e)
         
-    def get_visible_elements(self,driver):
+    def get_visible_elements(self):
+        driver=self.driver()
+        
         # Get a list of visible elements on the screen
         elements = driver.find_elements(MobileBy.XPATH, "//*")
         visible_texts = set()
@@ -1145,7 +1147,8 @@ class InstaBot:
                 visible_texts.add(element.text)
         return visible_texts
     
-    def scroll_to_top(self,driver):
+    def scroll_to_top(self):
+        driver=self.driver()
         same_elements_count = 0
         previous_elements = None
 
