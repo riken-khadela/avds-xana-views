@@ -104,19 +104,11 @@ class Command(BaseCommand):
                 ...
                 # tb = TwitterBot('android_368')
                 tb = InstaBot(user_avd.name)
-                tb.check_apk_installation()
-                # Connect vpn
-                # if not self.no_vpn:
-                #     time.sleep(10)
-                #     if not tb.connect_to_vpn(country=country):
-                #         raise Exception("Couldn't able to connect Cyberghost VPN")
-            
-                accounts_created_bool= tb.send_xana_views()
-                # time.sleep(300)
-
-                if accounts_created_bool:
-                    tb.follow_rio()
-                    accounts_created += 0
+                tb.driver()
+                tb.send_xana_views()
+                tb.kill_bot_process(True, True)
+                user_avd.delete()
+                
 
             except GetSmsCodeNotEnoughBalance as e:
                 LOGGER.debug('Not enough balance in GetSMSCode')
