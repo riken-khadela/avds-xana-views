@@ -36,7 +36,7 @@ class Command(BaseCommand):
                   '(PARALLEL_NUMER in the file conf.py)')
         )
     def create_avd(self,avdname):
-        # breakpoint()
+        # ...
         LOGGER.debug('Start to creating AVD user')
         twbot = InstaBot(emulator_name=avdname, start_appium=False, start_adb=False)
         device = random.choice(AVD_DEVICES)  # get a random device
@@ -66,7 +66,7 @@ class Command(BaseCommand):
             LOGGER.info(f'available avdname len is {len(self.devices)}')
             LOGGER.info(f'available ports len is {len(self.devices)}')
             # avd_name = random.choice(self.devices)
-            # breakpoint()
+            # ...
             if User_details.objects.filter(avdsname= avd_name).exists():
                 continue
             if UserAvd.objects.filter(name = avd_name).exists():
@@ -106,7 +106,7 @@ class Command(BaseCommand):
                 self.create_avd(user_avd.name)        
                 LOGGER.debug(f'AVD USER: {user_avd}')
 
-                breakpoint()
+                ...
                 # tb = TwitterBot('android_368')
                 tb = InstaBot(user_avd.name)
                 tb.check_apk_installation()

@@ -39,7 +39,7 @@ class Command(BaseCommand):
         )
 
     def create_avd(self,avdname):
-        # breakpoint()
+        # ...
         LOGGER.debug('Start to creating AVD user')
         twbot = InstaBot(emulator_name=avdname, start_appium=False, start_adb=False)
         device = random.choice(AVD_DEVICES)  # get a random device
@@ -93,7 +93,7 @@ class Command(BaseCommand):
             all_users = list(User_details.objects.filter(status='ACTIVE').order_by('?'))
             # all_users = list(User_details.objects.get(avds_name='instagram_70'))
             # all_users = list(user_detail.objects.using('monitor').filter(status='ACTIVE').order_by('?'))
-            # breakpoint()
+            # ...
             print(len(all_users),'-----')
             for userr in all_users:
                 df = pd.read_csv('today_avd.csv')

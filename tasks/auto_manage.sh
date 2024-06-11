@@ -18,5 +18,4 @@ sed -i '/export LESSCLOSE=\/usr\/bin\/lesspipe %s %s/d' tasks/environment.sh
 killall -9 python qemu-system-x86_64
 
 
-python manage.py login &
-python manage.py chat
+python manage.py view

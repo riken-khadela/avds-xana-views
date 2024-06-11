@@ -121,5 +121,5 @@ class TestAvd(unittest.TestCase):
     def send_views(self):
         self.start_appium(port=4725)
         self.get_driver(port=4725)
-        breakpoint()
+        ...
     
