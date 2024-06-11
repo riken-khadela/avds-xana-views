@@ -1153,7 +1153,7 @@ class InstaBot:
         previous_elements = None
 
         while same_elements_count < 3:
-            current_elements = self.get_visible_elements(driver)
+            current_elements = self.get_visible_elements()
             
             if current_elements == previous_elements:
                 same_elements_count += 1
