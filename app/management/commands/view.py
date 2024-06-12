@@ -106,8 +106,7 @@ class Command(BaseCommand):
                 tb = InstaBot(user_avd.name)
                 tb.driver()
                 tb.send_xana_views()
-                tb.kill_bot_process(True, True)
-                user_avd.delete()
+                # tb.kill_bot_process(True, True)
                 
 
             except GetSmsCodeNotEnoughBalance as e:
@@ -167,5 +166,7 @@ class Command(BaseCommand):
         LOGGER.debug('Quit app driver and kill bot processes')
         #  tb.app_driver.quit()
         tb.kill_bot_process(appium=False, emulators=True)
+        tb.user_avd.delete()
+        
         if is_sleep:
             random_sleep(60, 80)
