@@ -25,6 +25,7 @@ def check_avd_available():
 
     for avd in avd_list :
         if avd.startswith('xana_') :
+            print('deleted avd :',avd)
             delete_avd(avd)
 
 check_avd_available()
