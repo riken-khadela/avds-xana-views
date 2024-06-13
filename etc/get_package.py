@@ -1,6 +1,14 @@
 import os
 import subprocess
 
+
+'''
+This file is used to get the current package of running in avd
+like it will print the activity which we can use for start activity or any app in avs
+'''
+
+
+
 # Function to get the current running application package name
 def get_current_package():
     try:

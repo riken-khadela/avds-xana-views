@@ -11,6 +11,7 @@ from core.models import User
 from twbot.bot import *
 
 
+
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('-n')
@@ -123,6 +124,7 @@ class Command(BaseCommand):
             except sel_ex.WebDriverException as f:
                 print(f)
             finally:
+                self.delete_avd(user_avd.name)
                 if self.run_times != 0:
                     count += 1
                     if count >= self.run_times:
@@ -162,7 +164,7 @@ class Command(BaseCommand):
         
         random_sleep(10, 30)
 
-    def clean_bot(self, tb, is_sleep=True):
+    def clean_bot(self, tb, is_sleep=False):
         LOGGER.debug('Quit app driver and kill bot processes')
         #  tb.app_driver.quit()
         tb.kill_bot_process(appium=False, emulators=True)
@@ -170,3 +172,33 @@ class Command(BaseCommand):
         
         if is_sleep:
             random_sleep(60, 80)
+            
+    
+    def check_avd_available(self,avd_name : str = ''):
+        if not avd_name : return False
+        
+        avd_list = subprocess.check_output(['emulator', '-list-avds'])
+        avd_list = [avd for avd in avd_list.decode().split("\n") if avd]
+        if avd_name in avd_list :
+            return True
+        return False
+    
+    def delete_avd(self,avd_name : str = ''):
+        if not avd_name : return
+        
+        if not self.check_avd_available(avd_name) : 
+            print('The avd is not available')
+            return
+        
+        try:
+            output = subprocess.check_output(
+                f"avdmanager delete avd -n {avd_name}",
+                shell=True
+            ).decode()
+
+            print(output.replace('\n','').strip())
+            
+        except subprocess.CalledProcessError as e:
+            print(f"Error: {e.output}")
+        return None
+
